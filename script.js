@@ -46,16 +46,10 @@ function update() {
 
     if (gameWon) return;
 
-    // movement
-    if (keys["ArrowLeft"] || keys["a"]) {
-        player.velocityX = -player.speed;
-    } else if (keys["ArrowRight"] || keys["d"]) {
-        player.velocityX = player.speed;
-    } else {
-        player.velocityX = 0;
-    }
+    if (keys["ArrowLeft"] || keys["a"]) player.velocityX = -player.speed;
+    else if (keys["ArrowRight"] || keys["d"]) player.velocityX = player.speed;
+    else player.velocityX = 0;
 
-    // jump
     if ((keys["ArrowUp"] || keys["w"] || keys[" "]) && !player.jumping) {
         player.velocityY = -15;
         player.jumping = true;
@@ -66,7 +60,6 @@ function update() {
     player.x += player.velocityX;
     player.y += player.velocityY;
 
-    // collisions
     for (let platform of platforms) {
 
         if (
@@ -81,14 +74,10 @@ function update() {
         }
     }
 
-    // walls
     if (player.x < 0) player.x = 0;
-
-    if (player.x + player.width > canvas.width) {
+    if (player.x + player.width > canvas.width)
         player.x = canvas.width - player.width;
-    }
 
-    // collect stars
     for (let star of stars) {
 
         if (
@@ -103,14 +92,11 @@ function update() {
         }
     }
 
-    if (score === stars.length) {
-        gameWon = true;
-    }
+    if (score === stars.length) gameWon = true;
 }
 
 function drawBackgroundDecor() {
 
-    // clouds
     ctx.fillStyle = "rgba(255,255,255,0.8)";
 
     ctx.beginPath();
@@ -128,17 +114,14 @@ function drawBackgroundDecor() {
 
 function drawPlayer() {
 
-    // glowing circle behind player
     ctx.beginPath();
     ctx.arc(player.x + 35, player.y + 35, 45, 0, Math.PI * 2);
     ctx.fillStyle = "rgba(255,255,255,0.2)";
     ctx.fill();
 
-    // body
     ctx.fillStyle = "#ff006e";
     ctx.fillRect(player.x, player.y, player.width, player.height);
 
-    // 67 text
     ctx.fillStyle = "white";
     ctx.font = "bold 32px Arial";
     ctx.fillText("67", player.x + 10, player.y + 45);
@@ -172,9 +155,7 @@ function drawStars() {
             ctx.fillStyle = "gold";
 
             ctx.beginPath();
-
             ctx.arc(star.x, star.y, 12, 0, Math.PI * 2);
-
             ctx.fill();
 
             ctx.strokeStyle = "white";
@@ -193,15 +174,33 @@ function drawScore() {
 
 function drawWin() {
 
-    if (gameWon) {
+    if (!gameWon) return;
 
-        ctx.fillStyle = "rgba(0,0,0,0.6)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "rgba(0,0,0,0.65)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = "white";
-        ctx.font = "70px Arial";
-        ctx.fillText("YOU BEAT 67 OBBY (made by islam) 🎉", 260, 260);
-    }
+    const centerX = canvas.width / 2;
+
+    ctx.shadowColor = "#00f5ff";
+    ctx.shadowBlur = 25;
+
+    ctx.textAlign = "center";
+
+    // Main title
+    ctx.fillStyle = "white";
+    ctx.font = "bold 55px Arial";
+    ctx.fillText("YOU WIN!", centerX, 220);
+
+    // Subtitle
+    ctx.font = "26px Arial";
+    ctx.fillText("67 OBBY completed 🎉", centerX, 270);
+
+    // BIG credit text (increased as requested)
+    ctx.font = "bold 44px Arial";
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText("(made by islam)", centerX, 340);
+
+    ctx.shadowBlur = 0;
 }
 
 function draw() {
@@ -217,17 +216,9 @@ function draw() {
 }
 
 function gameLoop() {
-
     update();
     draw();
-
     requestAnimationFrame(gameLoop);
 }
 
 gameLoop();
-
-
-
-
-
-
