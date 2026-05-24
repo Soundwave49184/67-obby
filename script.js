@@ -200,7 +200,7 @@ function drawWin() {
 
         ctx.fillStyle = "white";
         ctx.font = "70px Arial";
-        ctx.fillText("YOU BEAT 67 OBBY 🎉", 260, 260);
+        ctx.fillText("YOU BEAT 67 OBBY (made by islam) 🎉", 260, 260);
     }
 }
 
@@ -225,3 +225,9 @@ function gameLoop() {
 }
 
 gameLoop();
+
+
+
+
+
+
